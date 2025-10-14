@@ -1,5 +1,3 @@
-
-
 import os
 import redis
 from fastapi import FastAPI, HTTPException
@@ -148,15 +146,16 @@ def generate_rule_from_payload(payload: str) -> str | None:
 # --- 3. Pydantic Models ---
 class RequestData(BaseModel):
     method: str
-    uri: str
-    headers: Dict[str, Any]
-    body: str | None = None
+    path: str
+    protocol: str
+    request_body: str  # Removed 'status' field
 
 
 class Rule(BaseModel):
     rule: str
 
 
+# --- 4. WAF ANALYSIS ENDPOINT (Stage 2) WITH AUTO-LEARNING ---
 @app.post("/analyze")
 async def analyze(request_data: RequestData):
     """
@@ -165,18 +164,19 @@ async def analyze(request_data: RequestData):
     log_debug("=" * 60)
     log_debug("📥 /analyze endpoint called")
     log_debug(f"Request details - Method: {request_data.method}, Path: {request_data.path}")
-    log_debug(f"Protocol: {request_data.protocol}, Status: {request_data.status}")
+    log_debug(f"Protocol: {request_data.protocol}")  # Removed status logging
     log_debug(f"Request body preview: {request_data.request_body[:100] if request_data.request_body else 'None'}...")
     
     # ==========================================================
     # <<< TOGGLE THIS VALUE FOR TESTING >>>
-    SIMULATE_MALICIOUS = True
+    SIMULATE_MALICIOUS = False  
     # ==========================================================
     
     log_debug(f"🔬 Analysis mode: {'MALICIOUS' if SIMULATE_MALICIOUS else 'BENIGN'}")
     
     try:
         # STEP 1: Transformer Model Analysis (currently simulated)
+        # TODO: Replace this with actual transformer model call
         is_malicious = SIMULATE_MALICIOUS
         reason = "Hardcoded: Malicious payload simulated." if is_malicious else "Hardcoded: Benign request simulated."
         
@@ -231,6 +231,7 @@ async def analyze(request_data: RequestData):
         log_debug(f"❌ CRITICAL ERROR in /analyze endpoint: {e}", "ERROR")
         log_debug(f"Stack trace: {traceback.format_exc()}", "ERROR")
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+
 
 # --- 5. RULE MANAGEMENT API ---
 @app.get("/rules", response_model=Dict[str, List[str]])
@@ -315,5 +316,5 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    log_debug("🚀 Starting Uvicorn server on 0.0.0.0:8000")
+    log_debug("🚀 Starting Uvicorn server on 0.0.0.0:8001")
     uvicorn.run(app, host="0.0.0.0", port=8001)
