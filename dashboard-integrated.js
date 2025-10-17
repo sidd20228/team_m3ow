@@ -33,7 +33,11 @@ class WAFDashboard {
         this.init();
     }
 
-    init() {
+    // ===================================================================
+    // UPDATED: Initialization with Historical Data Loading
+    // ===================================================================
+    
+    async init() {
         this.setupChart();
         this.setupEventListeners();
         this.connectWebSocket();
@@ -41,7 +45,123 @@ class WAFDashboard {
         this.setupLogViewer();
         this.updateLastUpdated();
         this.startHealthMonitoring();
+        
+        // ✅ NEW: Load historical data from MongoDB
+        await this.loadHistoricalData();
     }
+
+    // ===================================================================
+    // NEW: Load Historical Data from MongoDB
+    // ===================================================================
+    
+   // ===================================================================
+// UPDATED: Load Historical Data from MongoDB (with Chart Population)
+// ===================================================================
+
+async loadHistoricalData() {
+    try {
+        this.addLogEntry('Loading historical data from database...', 'info');
+        const response = await this.api.getHistoricalLogs(20);
+        
+        if (response.logs && response.logs.length > 0) {
+            console.log(`📚 Loading ${response.logs.length} historical events...`);
+            
+            // Clear existing data first
+            this.data.benignCount = 0;
+            this.data.maliciousCount = 0;
+            this.data.totalCount = 0;
+            
+            // ✅ NEW: Prepare chart data arrays
+            const chartData = {
+                benign: [],
+                malicious: []
+            };
+            
+            // Calculate totals and aggregate chart data by time
+            response.logs.forEach(log => {
+                if (log.analysis && log.analysis.is_malicious) {
+                    this.data.maliciousCount++;
+                } else {
+                    this.data.benignCount++;
+                }
+            });
+            this.data.totalCount = this.data.benignCount + this.data.maliciousCount;
+            
+            // ✅ NEW: Populate chart with historical data
+            // Group logs by time buckets (e.g., per minute) for visualization
+            const timeGroups = {};
+            
+            response.logs.forEach(log => {
+                const timestamp = new Date(log.timestamp);
+                const timeKey = timestamp.toLocaleTimeString();
+                
+                if (!timeGroups[timeKey]) {
+                    timeGroups[timeKey] = { benign: 0, malicious: 0 };
+                }
+                
+                if (log.analysis.is_malicious) {
+                    timeGroups[timeKey].malicious++;
+                } else {
+                    timeGroups[timeKey].benign++;
+                }
+            });
+            
+            // ✅ NEW: Add to chart (newest data on the right)
+            const sortedTimes = Object.keys(timeGroups).sort((a, b) => {
+                const timeA = new Date('1970-01-01 ' + a);
+                const timeB = new Date('1970-01-01 ' + b);
+                return timeA - timeB;
+            });
+            
+            // Clear existing chart data
+            this.chart.data.labels = [];
+            this.chart.data.datasets[0].data = [];
+            this.chart.data.datasets[1].data = [];
+            
+            // Add historical data to chart
+            sortedTimes.forEach(timeKey => {
+                this.chart.data.labels.push(timeKey);
+                this.chart.data.datasets[0].data.push(timeGroups[timeKey].benign);
+                this.chart.data.datasets[1].data.push(timeGroups[timeKey].malicious);
+            });
+            
+            // Update chart
+            this.updateChart();
+            
+            // Update counters
+            this.updateCounters();
+            
+            // Add events to table (reverse order to show newest first)
+            const tableBody = document.getElementById('eventsTableBody');
+            tableBody.innerHTML = ''; // Clear table first
+            
+            response.logs.reverse().forEach(log => {
+                const event = {
+                    id: log._id,
+                    timestamp: new Date(log.timestamp).toLocaleTimeString(),
+                    sourceIP: this.extractIP(log.request.request_body) || 'N/A',
+                    url: log.request.path,
+                    threatType: this.detectThreatType(log.request.request_body, log.request.path),
+                    threat: this.getThreatLabel(log.request.request_body, log.request.path),
+                    action: log.action_taken,
+                    severity: log.analysis.is_malicious ? 'high' : 'low',
+                    mongoId: log._id,
+                    reconstructionLoss: log.analysis.reconstruction_loss,
+                    autoLearnedRule: log.auto_learned_rule
+                };
+                this.addEventToTable(event);
+            });
+            
+            this.addLogEntry(`✅ Loaded ${response.logs.length} historical events (${this.data.benignCount} benign, ${this.data.maliciousCount} malicious)`, 'success');
+        } else {
+            this.addLogEntry('No historical data found in database', 'info');
+        }
+    } catch (error) {
+        console.error('Failed to load historical data:', error);
+        this.addLogEntry('⚠️ Failed to load historical data from database', 'warning');
+    }
+}
+
 
     // ===================================================================
     // WebSocket Integration
@@ -150,7 +270,7 @@ class WAFDashboard {
         
         if (body.includes('script') || body.includes('<') || body.includes('>')) {
             return 'xss';
-        } else if (body.includes('select') || body.includes('drop') || body.includes('union')) {
+        } else if (body.includes('select') || body.includes('drop') || body.includes('union') || pathLower.includes('or')) {
             return 'sql-injection';
         } else if (pathLower.includes('admin') || pathLower.includes('../')) {
             return 'brute-force';
@@ -202,7 +322,7 @@ class WAFDashboard {
     }
 
     // ===================================================================
-    // Chart Setup (same as before)
+    // Chart Setup
     // ===================================================================
 
     setupChart() {
@@ -553,7 +673,7 @@ class WAFDashboard {
     async allowRequest(mongoId) {
         try {
             const result = await this.api.whitelistRequest(mongoId);
-            this.addLogEntry(`Request ${mongoId} whitelisted successfully`, 'success');
+            this.addLogEntry(`Request ${mongoId.substring(0, 8)}... whitelisted successfully`, 'success');
             console.log('Whitelist result:', result);
         } catch (error) {
             this.addLogEntry(`Failed to whitelist request: ${error.message}`, 'error');
@@ -562,11 +682,11 @@ class WAFDashboard {
     }
 
     blockRequest(mongoId) {
-        this.addLogEntry(`Request ${mongoId} permanently blocked`, 'warning');
+        this.addLogEntry(`Request ${mongoId.substring(0, 8)}... permanently blocked`, 'warning');
         // Additional logic can be added here
     }
 
-    refreshData() {
+    async refreshData() {
         const refreshBtn = document.getElementById('refreshBtn');
         refreshBtn.style.transform = 'rotate(360deg)';
         
@@ -575,6 +695,10 @@ class WAFDashboard {
         }, 500);
 
         this.checkBackendHealth();
+        
+        // ✅ NEW: Reload historical data on refresh
+        await this.loadHistoricalData();
+        
         this.addLogEntry('Dashboard data refreshed', 'info');
         this.updateLastUpdated();
     }

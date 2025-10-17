@@ -113,6 +113,25 @@ class WAFDashboardAPI {
     }
 
     // ===================================================================
+    // Historical Data Loading (NEW)
+    // ===================================================================
+    
+    async getHistoricalLogs(limit = 20) {
+        try {
+            const response = await fetch(`${this.baseUrl}/logs?limit=${limit}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('[API] ✅ Historical logs fetched:', data);
+            return data;
+        } catch (error) {
+            console.error('[API] ❌ Failed to fetch historical logs:', error);
+            return { logs: [], count: 0, error: error.message };
+        }
+    }
+
+    // ===================================================================
     // WAF Mode Control
     // ===================================================================
     
@@ -176,7 +195,7 @@ class WAFDashboardAPI {
     // Test Request (for demonstration)
     // ===================================================================
     
-    async sendTestRequest(method, path, requestBody, isMalicious = false) {
+    async sendTestRequest(method, path, requestBody) {
         try {
             const response = await fetch(`${this.baseUrl}/analyze`, {
                 method: 'POST',
