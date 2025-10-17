@@ -2,7 +2,7 @@
 // This file contains all API integration functions for the WAF Dashboard
 
 class WAFDashboardAPI {
-    constructor(baseUrl = 'http://localhost:8001') {
+    constructor(baseUrl = 'http://localhost:8002') {
         this.baseUrl = baseUrl;
         this.wsUrl = baseUrl.replace('http', 'ws') + '/ws/logs';
         this.ws = null;
