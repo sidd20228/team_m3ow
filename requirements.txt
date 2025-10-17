@@ -6,3 +6,5 @@ transformers
 torch
 accelerate
 pika
+scikit-learn
+joblib
