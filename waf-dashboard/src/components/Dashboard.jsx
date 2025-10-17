@@ -15,10 +15,33 @@ export default function Dashboard() {
   const [events, setEvents] = useState([])
   const [mode, setModeState] = useState('fast')
   const [logCollapsed, setLogCollapsed] = useState(false)
+  const [logs, setLogs] = useState([])
+  const [logLimit, setLogLimit] = useState(200) // Default 100 logs
 
   const chartRef = useRef(null)
   const chartInstanceRef = useRef(null)
+  const pollingIntervalRef = useRef(null)
 
+  // Helper function to convert UTC to IST
+  const convertToIST = (utcDateString) => {
+    const date = new Date(utcDateString)
+    const istOffset = 5.5 * 60 * 60 * 1000
+    const istDate = new Date(date.getTime() + istOffset)
+    return istDate
+  }
+
+  // Format time in IST
+  const formatISTTime = (utcDateString) => {
+    const istDate = convertToIST(utcDateString)
+    return istDate.toLocaleTimeString('en-IN', { 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit',
+      hour12: true 
+    })
+  }
+
+  // Initialize chart
   useEffect(() => {
     const ctx = chartRef.current?.getContext('2d')
     if (!ctx) return
@@ -62,45 +85,133 @@ export default function Dashboard() {
     }
   }, [])
 
-  useEffect(() => {
-    api.connectWebSocket(
-      (data) => {
-        const isMal = data.action_taken === 'BLOCK' || data.is_malicious
-        setMalicious((m) => m + (isMal ? 1 : 0))
-        setBenign((b) => b + (!isMal ? 1 : 0))
-        setLastUpdated(new Date().toLocaleTimeString())
-
-        const nowLabel = new Date().toLocaleTimeString()
+  // Fetch logs from /logs endpoint
+  const fetchLogs = async () => {
+    try {
+      const response = await api.getHistoricalLogs(logLimit, 0)
+      
+      if (response.logs && response.logs.length > 0) {
+        setConnected(true)
+        setLogs(response.logs)
+        
+        // Calculate totals
+        let benign = 0
+        let malicious = 0
+        const timeGroups = {}
+        
+        response.logs.forEach(log => {
+          if (log.analysis && log.analysis.is_malicious) {
+            malicious++
+          } else {
+            benign++
+          }
+          
+          // Group by time for chart (IST)
+          const timeKey = formatISTTime(log.timestamp)
+          
+          if (!timeGroups[timeKey]) {
+            timeGroups[timeKey] = { benign: 0, malicious: 0 }
+          }
+          
+          if (log.analysis && log.analysis.is_malicious) {
+            timeGroups[timeKey].malicious++
+          } else {
+            timeGroups[timeKey].benign++
+          }
+        })
+        
+        setBenign(benign)
+        setMalicious(malicious)
+        
+        // Update chart
         const chart = chartInstanceRef.current
         if (chart) {
-          chart.data.labels.push(nowLabel)
-          chart.data.datasets[0].data.push(!isMal ? 1 : 0)
-          chart.data.datasets[1].data.push(isMal ? 1 : 0)
-          if (chart.data.labels.length > 100) {
-            chart.data.labels.shift()
-            chart.data.datasets.forEach((ds) => ds.data.shift())
-          }
+          const sortedTimes = Object.keys(timeGroups).sort((a, b) => {
+            const timeA = new Date('1970-01-01 ' + a.replace(/AM|PM/, '').trim())
+            const timeB = new Date('1970-01-01 ' + b.replace(/AM|PM/, '').trim())
+            return timeA - timeB
+          })
+          
+          chart.data.labels = sortedTimes
+          chart.data.datasets[0].data = sortedTimes.map(t => timeGroups[t].benign)
+          chart.data.datasets[1].data = sortedTimes.map(t => timeGroups[t].malicious)
           chart.update('none')
         }
+        
+        // Update events table
+        const recentEvents = response.logs.slice(0, 20).map(log => ({
+          id: log._id,
+          path: log.request?.path || '/',
+          action: log.action_taken || 'ALLOW',
+          ip: extractIP(log.request?.request_body) || '0.0.0.0',
+          ts: formatISTTime(log.timestamp),
+          fullTs: convertToIST(log.timestamp),
+        }))
+        setEvents(recentEvents)
+        
+        setLastUpdated(new Date().toLocaleTimeString('en-IN', { 
+          hour: '2-digit', 
+          minute: '2-digit', 
+          second: '2-digit',
+          hour12: true 
+        }))
+      } else {
+        setConnected(false)
+      }
+    } catch (error) {
+      console.error('Failed to fetch logs:', error)
+      setConnected(false)
+    }
+  }
 
-        setEvents((prev) => [{ id: data.mongo_id || Date.now(), path: data.path || '/', action: data.action_taken || (isMal ? 'BLOCK' : 'ALLOW'), ip: (data.request_body && (data.request_body.ip || data.request_body.client_ip)) || '0.0.0.0', ts: new Date().toLocaleTimeString() }, ...prev].slice(0, 20))
-      },
-      (conn) => setConnected(conn)
-    )
+  // Helper to extract IP from request body
+  const extractIP = (requestBody) => {
+    if (!requestBody) return null
+    const ipMatch = String(requestBody).match(/\b(?:\d{1,3}\.){3}\d{1,3}\b/)
+    return ipMatch ? ipMatch[0] : null
+  }
 
-    // Initial health check
-    api.checkHealth().then(() => setLastUpdated(new Date().toLocaleTimeString())).catch(() => {})
+  // ✅ FIX: Fetch logs when limit changes (removed condition)
+  useEffect(() => {
+    fetchLogs()
+  }, [logLimit])
 
-    return () => api.disconnectWebSocket()
-  }, [api])
+  // ✅ FIX: Initial load and polling - removed 'api' from dependency array
+  useEffect(() => {
+    api.checkHealth()
+      .then(() => setConnected(true))
+      .catch(() => setConnected(false))
 
-  const setMode = async (mode) => {
+    fetchLogs()
+
+    pollingIntervalRef.current = setInterval(() => {
+      fetchLogs()
+    }, 3000)
+
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current)
+      }
+    }
+  }, []) // ✅ Empty dependency array - only run once on mount
+
+  const setMode = async (newMode) => {
     try {
-      await api.setWAFMode(mode)
-      setModeState(mode)
+      await api.setWAFMode(newMode)
+      setModeState(newMode)
     } catch (e) {
       console.error('Failed to set mode', e)
     }
+  }
+
+  const handleRefresh = () => {
+    fetchLogs()
+  }
+
+  const handleLogLimitChange = (e) => {
+    const newLimit = parseInt(e.target.value, 10)
+    setLogLimit(newLimit)
+    console.log('Log limit changed to:', newLimit)
   }
 
   return (
@@ -114,16 +225,44 @@ export default function Dashboard() {
           <div className="system-status">
             <div className="status-indicator" id="mlStatus">
               <div className={`status-dot ml${connected ? '' : ' offline'}`} id="mlStatusDot" />
-              <span>ML Model</span>
+              <span>DL Model</span>
             </div>
           </div>
         </div>
         <div className="header-right">
+          {/* Log Limit Selector */}
+          <div className="log-limit-selector">
+            <label htmlFor="logLimit" style={{ marginRight: '0.5rem', fontSize: '0.875rem', color: '#d1d5db' }}>
+              Load:
+            </label>
+            <select 
+              id="logLimit" 
+              value={logLimit} 
+              onChange={handleLogLimitChange}
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '0.375rem',
+                padding: '0.375rem 0.75rem',
+                color: '#fff',
+                fontSize: '0.875rem',
+                cursor: 'pointer',
+                marginRight: '1rem'
+              }}
+            >
+              <option value={50}>50 logs</option>
+              <option value={100}>100 logs</option>
+              <option value={200}>200 logs</option>
+              <option value={500}>500 logs</option>
+              <option value={1000}>1000 logs</option>
+            </select>
+          </div>
+          
           <div className="last-updated">
             <i className="fas fa-clock" />
             <span id="lastUpdated">Last Updated: {lastUpdated}</span>
           </div>
-          <button className="refresh-btn" id="refreshBtn" onClick={() => setLastUpdated(new Date().toLocaleTimeString())}>
+          <button className="refresh-btn" id="refreshBtn" onClick={handleRefresh}>
             <i className="fas fa-sync-alt" />
           </button>
         </div>
@@ -190,27 +329,33 @@ export default function Dashboard() {
 
           <section className="table-section">
             <div className="table-header">
-              <h3>Recent Events</h3>
+              <h3>Recent Events (Showing last 20 of {logs.length})</h3>
             </div>
             <div className="table-container">
               <table className="events-table">
                 <thead>
                   <tr>
-                    <th>Time</th>
+                    <th>Time (IST)</th>
                     <th>IP</th>
                     <th>Path</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {events.map((e) => (
-                    <tr key={e.id} className={e.action === 'BLOCK' ? 'malicious' : ''}>
-                      <td>{e.ts}</td>
-                      <td>{e.ip}</td>
-                      <td>{e.path}</td>
-                      <td>{e.action}</td>
+                  {events.length > 0 ? (
+                    events.map((e) => (
+                      <tr key={e.id} className={e.action === 'BLOCK' ? 'malicious' : ''}>
+                        <td>{e.ts}</td>
+                        <td>{e.ip}</td>
+                        <td>{e.path}</td>
+                        <td>{e.action}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={4} style={{ textAlign: 'center' }}>No events yet</td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
             </div>
@@ -234,18 +379,32 @@ export default function Dashboard() {
           </button>
         </div>
         <div className="log-content" id="logContent">
-          <div className="log-entry">
-            <span className="log-time">[{lastUpdated}]</span>
-            <span className="log-level info">INFO</span>
-            <span className="log-message">Dashboard running</span>
-          </div>
+          {logs.length > 0 ? (
+            logs.slice(0, 10).map((log, idx) => (
+              <div key={idx} className="log-entry">
+                <span className="log-time">[{formatISTTime(log.timestamp)}]</span>
+                <span className={`log-level ${log.analysis?.is_malicious ? 'warning' : 'info'}`}>
+                  {log.analysis?.is_malicious ? 'ALERT' : 'INFO'}
+                </span>
+                <span className="log-message">
+                  {log.request?.method} {log.request?.path} - {log.action_taken}
+                </span>
+              </div>
+            ))
+          ) : (
+            <div className="log-entry">
+              <span className="log-time">[{lastUpdated}]</span>
+              <span className="log-level info">INFO</span>
+              <span className="log-message">Waiting for logs...</span>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="background-effects">
-        <div className="particle" style={{ ['--delay']: '0s', ['--duration']: '10s' }} />
-        <div className="particle" style={{ ['--delay']: '2s', ['--duration']: '12s' }} />
-        <div className="particle" style={{ ['--delay']: '4s', ['--duration']: '8s' }} />
+        <div className="particle" style={{ '--delay': '0s', '--duration': '10s' }} />
+        <div className="particle" style={{ '--delay': '2s', '--duration': '12s' }} />
+        <div className="particle" style={{ '--delay': '4s', '--duration': '8s' }} />
       </div>
     </div>
   )
