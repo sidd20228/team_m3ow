@@ -16,7 +16,7 @@ export default function Dashboard() {
   const [mode, setModeState] = useState('fast')
   const [logCollapsed, setLogCollapsed] = useState(false)
   const [logs, setLogs] = useState([])
-  const [logLimit, setLogLimit] = useState(200) // Default 100 logs
+  const [logLimit, setLogLimit] = useState(200)
 
   const chartRef = useRef(null)
   const chartInstanceRef = useRef(null)
@@ -75,7 +75,10 @@ export default function Dashboard() {
         scales: {
           y: { beginAtZero: true, ticks: { precision: 0 } },
         },
-        plugins: { legend: { display: true }, tooltip: { intersect: false, mode: 'index' } },
+        plugins: { 
+          legend: { display: true }, 
+          tooltip: { intersect: false, mode: 'index' } 
+        },
       },
     })
 
@@ -171,19 +174,22 @@ export default function Dashboard() {
     return ipMatch ? ipMatch[0] : null
   }
 
-  // ✅ FIX: Fetch logs when limit changes (removed condition)
+  // Fetch logs when limit changes
   useEffect(() => {
     fetchLogs()
   }, [logLimit])
 
-  // ✅ FIX: Initial load and polling - removed 'api' from dependency array
+  // Initial load and polling
   useEffect(() => {
+    // Health check
     api.checkHealth()
       .then(() => setConnected(true))
       .catch(() => setConnected(false))
 
+    // Initial fetch
     fetchLogs()
 
+    // Poll every 3 seconds
     pollingIntervalRef.current = setInterval(() => {
       fetchLogs()
     }, 3000)
@@ -193,7 +199,7 @@ export default function Dashboard() {
         clearInterval(pollingIntervalRef.current)
       }
     }
-  }, []) // ✅ Empty dependency array - only run once on mount
+  }, [])
 
   const setMode = async (newMode) => {
     try {

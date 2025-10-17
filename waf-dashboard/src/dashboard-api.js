@@ -1,107 +1,153 @@
-// Ported from original dashboard-api.js for use inside Vite/ESM
+// WAF Dashboard API - Pure REST API (No WebSocket)
 export default class WAFDashboardAPI {
-  constructor(baseUrl = 'http://localhost:8001') {
-    this.baseUrl = baseUrl;
-    this.wsUrl = baseUrl.replace('http', 'ws') + '/ws/logs';
-    this.ws = null;
-    this.reconnectAttempts = 0;
-    this.maxReconnectAttempts = 5;
-    this.reconnectDelay = 3000;
-    this.onMessageCallback = null;
-    this.onConnectionChange = null;
+  constructor(baseUrl = 'http://localhost:8002') {
+    this.baseUrl = baseUrl
+    console.log('[API] Initialized with base URL:', this.baseUrl)
   }
 
-  connectWebSocket(onMessage, onConnectionChange) {
-    this.onMessageCallback = onMessage;
-    this.onConnectionChange = onConnectionChange;
+  // ===================================================================
+  // LOGS ENDPOINTS
+  // ===================================================================
+  
+  async getHistoricalLogs(limit = 50, skip = 0) {
     try {
-      this.ws = new WebSocket(this.wsUrl);
-      this.ws.onopen = () => {
-        this.reconnectAttempts = 0;
-        this.onConnectionChange?.(true);
-      };
-      this.ws.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          this.onMessageCallback?.(data);
-        } catch (err) {
-          console.error('WebSocket message parse error', err);
-        }
-      };
-      this.ws.onclose = () => {
-        this.onConnectionChange?.(false);
-        this.attemptReconnect();
-      };
-      this.ws.onerror = () => {
-        this.onConnectionChange?.(false);
-      };
+      const response = await fetch(`http://localhost:8002/logs?limit=${limit}&skip=${skip}`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      console.log('[API] ✅ Fetched', data.count, 'logs')
+      return data
     } catch (error) {
-      console.error('WebSocket connection error:', error);
-      this.attemptReconnect();
+      console.error('[API] ❌ Failed to fetch logs:', error)
+      return { logs: [], count: 0, total: 0, error: error.message }
     }
   }
 
-  attemptReconnect() {
-    if (this.reconnectAttempts < this.maxReconnectAttempts) {
-      this.reconnectAttempts++;
-      setTimeout(() => {
-        if (this.onMessageCallback && this.onConnectionChange) {
-          this.connectWebSocket(this.onMessageCallback, this.onConnectionChange);
-        }
-      }, this.reconnectDelay);
-    }
-  }
-
-  disconnectWebSocket() {
-    if (this.ws) {
-      this.ws.close();
-      this.ws = null;
-    }
-  }
-
-  async checkHealth() {
+  async getLogStats() {
     try {
-      const res = await fetch(`${this.baseUrl}/health`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (e) {
-      return {
-        status: 'error',
-        redis_connected: false,
-        mongodb_connected: false,
-        anomaly_model_loaded: false,
-        error: e.message,
-      };
+      const response = await fetch(`${this.baseUrl}/logs/stats`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      console.log('[API] ✅ Log stats fetched:', data)
+      return data
+    } catch (error) {
+      console.error('[API] ❌ Failed to fetch log stats:', error)
+      return null
     }
   }
 
-  async getHistoricalLogs(limit = 20) {
+  async getLogById(logId) {
     try {
-      const res = await fetch(`${this.baseUrl}/logs?limit=${limit}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (e) {
-      return { logs: [], count: 0, error: e.message };
+      const response = await fetch(`${this.baseUrl}/logs/${logId}`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      return await response.json()
+    } catch (error) {
+      console.error('[API] ❌ Failed to fetch log:', error)
+      return null
     }
   }
 
+  // ===================================================================
+  // WAF MODE & DASHBOARD
+  // ===================================================================
+  
   async setWAFMode(mode) {
-    const valid = ['off', 'fast', 'full'];
-    if (!valid.includes(mode)) throw new Error(`Invalid mode: ${mode}`);
-    const res = await fetch(`${this.baseUrl}/set-mode/${mode}`, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    const validModes = ['off', 'fast', 'full']
+    if (!validModes.includes(mode)) {
+      throw new Error(`Invalid mode: ${mode}. Must be one of: ${validModes.join(', ')}`)
+    }
+    
+    try {
+      const response = await fetch(`${this.baseUrl}/set-mode/${mode}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      console.log('[API] ✅ WAF mode set to:', mode)
+      return data
+    } catch (error) {
+      console.error('[API] ❌ Failed to set WAF mode:', error)
+      throw error
+    }
   }
 
   async whitelistRequest(mongoId) {
-    const res = await fetch(`${this.baseUrl}/pass-request`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ mongo_id: mongoId }) });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    try {
+      const response = await fetch(`${this.baseUrl}/pass-request`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mongo_id: mongoId })
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      console.log('[API] ✅ Request whitelisted:', mongoId)
+      return data
+    } catch (error) {
+      console.error('[API] ❌ Failed to whitelist request:', error)
+      return null
+    }
   }
 
+  // ===================================================================
+  // HEALTH CHECK
+  // ===================================================================
+  
+  async checkHealth() {
+    try {
+      const response = await fetch(`${this.baseUrl}/health`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      console.log('[API] ✅ Health check:', data.status)
+      return data
+    } catch (error) {
+      console.error('[API] ❌ Health check failed:', error)
+      return { 
+        status: 'error', 
+        redis_connected: false,
+        mongodb_connected: false,
+        anomaly_model_loaded: false,
+        error: error.message 
+      }
+    }
+  }
+
+  // ===================================================================
+  // TEST REQUESTS
+  // ===================================================================
+  
   async sendTestRequest(method, path, requestBody) {
-    const res = await fetch(`${this.baseUrl}/analyze`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ method, path, protocol: 'HTTP/1.1', request_body: requestBody }) });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
+    try {
+      const response = await fetch(`${this.baseUrl}/analyze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          method: method,
+          path: path,
+          protocol: 'HTTP/1.1',
+          request_body: requestBody
+        })
+      })
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      console.log('[API] ✅ Test request analyzed:', data)
+      return data
+    } catch (error) {
+      console.error('[API] ❌ Test request failed:', error)
+      throw error
+    }
   }
 }
