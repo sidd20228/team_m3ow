@@ -11,7 +11,7 @@ export default class WAFDashboardAPI {
   
   async getHistoricalLogs(limit = 50, skip = 0) {
     try {
-      const response = await fetch(`http://localhost:8002/logs?limit=${limit}&skip=${skip}`)
+      const response = await fetch(`https://waf-backend-x2kz.onrender.com/logs?limit=${limit}&skip=${skip}`)
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
