@@ -1,10 +1,12 @@
 fastapi
 uvicorn
-pydantic
 redis
-transformers
+pymongo
+python-dotenv
 torch
-accelerate
-pika
-scikit-learn
+transformers
 joblib
+scikit-learn
+numpy
+requests
+pydantic
