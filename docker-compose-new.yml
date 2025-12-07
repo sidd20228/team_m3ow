@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # 1. Redis (Keep local for speed)
+  redis:
+    image: redis:7-alpine
+    container_name: waf_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - waf_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # 2. FastAPI WAF Application
+  waf_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: waf_fastapi_app
+    ports:
+      - "8001:8001"
+    environment:
+      # Use the variable from your .env file
+      - MONGO_URI=${MONGO_URI}
+      - REDIS_URL=redis://redis:6379
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      redis:
+        condition: service_healthy
+      # Removed dependency on local mongodb
+    volumes:
+      # Mount your models so you can update them without rebuilding
+      - ./distilbert_http_mlm_epoch22:/app/distilbert_http_mlm_epoch22
+      - ./scaler.pkl:/app/scaler.pkl
+      - ./iforest.pkl:/app/iforest.pkl
+      - ./train_features_dvwa_fix_seed.npy:/app/train_features_dvwa_fix_seed.npy
+    networks:
+      - waf_network
+
+  # 3. OpenResty (Keep in Docker for easy library management)
+  openresty:
+    build:
+      context: .
+      dockerfile: Dockerfile.openresty
+    container_name: waf_openresty
+    ports:
+      - "80:80"
+    depends_on:
+      waf_app:
+        condition: service_healthy
+    volumes:
+      - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./lua:/usr/local/openresty/nginx/lua
+    networks:
+      - waf_network
+
+# Removed mongodb_data volume
+volumes:
+  redis_data:
+
+networks:
+  waf_network:
+    driver: bridge

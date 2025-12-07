@@ -1,0 +1,32 @@
+# Use the official OpenResty image
+FROM openresty/openresty:centos
+
+# -----------------------------------------------------------------------------
+# ✅ CRITICAL UPDATE: Install the Lua HTTP client
+# This is required for your WAF to send JSON to the Python API
+RUN /usr/local/openresty/bin/opm get ledgetech/lua-resty-http
+# -----------------------------------------------------------------------------
+
+# Set working directory
+WORKDIR /usr/local/openresty/nginx
+
+# Create logs directory manually (safeguard)
+RUN mkdir -p /usr/local/openresty/nginx/logs
+
+# Copy nginx configuration
+# Ensure your local file is named 'nginx.conf'
+COPY nginx.conf ./conf/nginx.conf
+
+# Copy Lua WAF chain script
+# This creates the 'lua' directory inside the container automatically
+COPY lua/waf_chain.lua ./lua/waf_chain.lua
+
+# Expose HTTP port
+EXPOSE 80
+
+# Health check (Checks if Nginx is responding)
+HEALTHCHECK --interval=10s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
+
+# Run OpenResty
+CMD ["/usr/local/openresty/bin/openresty", "-g", "daemon off;"]
