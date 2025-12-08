@@ -1,0 +1,101 @@
+timestamp,ip,method,url,path,protocol,request_body,response_status,blocked,latency_ms,type
+2025-12-08T09:31:34.784372,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Difficult move chair movie none others."", ""user_id"": ""515""}",403,True,3709.07,Comment
+2025-12-08T09:31:35.279804,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""hurstgary"", ""password"": ""*3BR5pjd_mc&""}",403,True,4.43,Login Attempt
+2025-12-08T09:31:35.471082,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""tgarner"", ""password"": ""^90AbN(2*5uJ""}",403,True,17.29,Login Attempt
+2025-12-08T09:31:37.573556,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""table""}",403,True,1861.09,Search
+2025-12-08T09:31:37.897091,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""malik05"", ""password"": ""%l0REs$e$r"", ""confirmParam"": ""on"", ""email"": ""simmonshannah@example.com""}",403,True,3.08,Registration
+2025-12-08T09:31:38.127802,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""mary05"", ""password"": ""$Kw4q4$f$kFl""}",403,True,4.31,Login Attempt
+2025-12-08T09:31:38.598317,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""welchemily"", ""password"": ""%6d5X*QpQhMZ""}",403,True,5.65,Login Attempt
+2025-12-08T09:31:39.063061,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""leondavid"", ""password"": ""!)V0xsIS$h"", ""confirmParam"": ""on"", ""email"": ""fernando36@example.org""}",403,True,17.5,Registration
+2025-12-08T09:31:39.411974,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""jamie04"", ""password"": ""$C5!M_h(IS"", ""confirmParam"": ""on"", ""email"": ""fjones@example.net""}",403,True,5.26,Registration
+2025-12-08T09:31:41.660239,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""Port John""}",403,True,1848.3,Search
+2025-12-08T09:31:42.133735,127.0.0.1,GET,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"""""",403,True,4.32,Page Load
+2025-12-08T09:31:44.460930,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""East Ricardofurt""}",403,True,1906.76,Search
+2025-12-08T09:31:46.734155,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""lawyer""}",403,True,1986.69,Search
+2025-12-08T09:31:47.141609,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""powelltimothy"", ""password"": ""+L5pO2yd2@"", ""confirmParam"": ""on"", ""email"": ""stephensstephanie@example.net""}",403,True,4.68,Registration
+2025-12-08T09:31:47.270277,127.0.0.1,GET,http://localhost:2323/WebGoat/welcome.mvc,/WebGoat/welcome.mvc,HTTP/1.1,"""""",403,True,15.86,Page Load
+2025-12-08T09:31:49.392600,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Place professor throw claim open shoulder down."", ""user_id"": ""476""}",403,True,1882.19,Comment
+2025-12-08T09:31:51.395217,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Wall reason share trial notice recently."", ""user_id"": ""59""}",403,True,1885.9,Comment
+2025-12-08T09:31:51.854420,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""cunninghamshawn"", ""password"": ""#3R*Z_*VwIQw""}",403,True,3.88,Login Attempt
+2025-12-08T09:31:52.348161,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""osalinas"", ""password"": ""hq9DetPO+6"", ""confirmParam"": ""on"", ""email"": ""hayespaul@example.net""}",403,True,16.37,Registration
+2025-12-08T09:31:54.118292,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Manager option hour today catch station."", ""user_id"": ""696""}",403,True,1652.45,Comment
+2025-12-08T09:31:55.982557,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""culture""}",403,True,1727.56,Search
+2025-12-08T09:31:56.123926,127.0.0.1,GET,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"""""",403,True,5.29,Page Load
+2025-12-08T09:31:56.578229,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""williamsyolanda"", ""password"": ""ANKF4Kg$Ou_4""}",403,True,16.75,Login Attempt
+2025-12-08T09:31:57.041061,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""ashley11"", ""password"": ""Dx(76HsplZ"", ""confirmParam"": ""on"", ""email"": ""gmiller@example.org""}",403,True,17.75,Registration
+2025-12-08T09:31:59.355859,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Plant early never stay shoulder way."", ""user_id"": ""648""}",403,True,1940.31,Comment
+2025-12-08T09:31:59.538395,127.0.0.1,GET,http://localhost:2323/WebGoat/welcome.mvc,/WebGoat/welcome.mvc,HTTP/1.1,"""""",403,True,3.83,Page Load
+2025-12-08T09:32:01.936165,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Back local suffer perform hot present great."", ""user_id"": ""164""}",403,True,1948.0,Comment
+2025-12-08T09:32:04.020892,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""field""}",403,True,1955.67,Search
+2025-12-08T09:32:04.418712,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""cruzrichard"", ""password"": ""+A83IvzS%&"", ""confirmParam"": ""on"", ""email"": ""russellmaddox@example.org""}",403,True,4.24,Registration
+2025-12-08T09:32:04.607010,127.0.0.1,GET,http://localhost:2323/WebGoat/registration,/WebGoat/registration,HTTP/1.1,"""""",403,True,4.0,Page Load
+2025-12-08T09:32:04.972386,127.0.0.1,GET,http://localhost:2323/WebGoat/registration,/WebGoat/registration,HTTP/1.1,"""""",403,True,6.34,Page Load
+2025-12-08T09:32:05.372409,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""sobrien"", ""password"": ""vanR4R7w(&Ge""}",403,True,16.64,Login Attempt
+2025-12-08T09:32:07.761687,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Current even spring firm player laugh put spend."", ""user_id"": ""54""}",403,True,1908.14,Comment
+2025-12-08T09:32:08.097846,127.0.0.1,GET,http://localhost:2323/WebGoat/welcome.mvc,/WebGoat/welcome.mvc,HTTP/1.1,"""""",403,True,3.29,Page Load
+2025-12-08T09:32:08.366560,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""perezbrandon"", ""password"": ""!q4F*N3eW4"", ""confirmParam"": ""on"", ""email"": ""williamsonsheryl@example.net""}",403,True,17.78,Registration
+2025-12-08T09:32:08.797412,127.0.0.1,GET,http://localhost:2323/WebGoat/registration,/WebGoat/registration,HTTP/1.1,"""""",403,True,4.55,Page Load
+2025-12-08T09:32:09.075967,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""jessicasmith"", ""password"": ""*6)eIvgMLn"", ""confirmParam"": ""on"", ""email"": ""robertbarnett@example.com""}",403,True,19.6,Registration
+2025-12-08T09:32:11.376953,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""Irwinmouth""}",403,True,2041.35,Search
+2025-12-08T09:32:13.664219,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""attorney""}",403,True,1940.85,Search
+2025-12-08T09:32:13.806122,127.0.0.1,GET,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"""""",403,True,3.1,Page Load
+2025-12-08T09:32:14.194904,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""stacey40"", ""password"": ""a&@lbxN395H$""}",403,True,17.86,Login Attempt
+2025-12-08T09:32:14.428387,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""turn""}",403,True,18.73,Search
+2025-12-08T09:32:14.831613,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""paul14"", ""password"": ""3_0Ui_z6s$0O""}",403,True,18.18,Login Attempt
+2025-12-08T09:32:15.262849,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""human""}",403,True,4.57,Search
+2025-12-08T09:32:15.386393,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""derricksmith"", ""password"": ""#8o^XhefCt"", ""confirmParam"": ""on"", ""email"": ""aliciamcdonald@example.net""}",403,True,5.09,Registration
+2025-12-08T09:32:15.585043,127.0.0.1,GET,http://localhost:2323/WebGoat/welcome.mvc,/WebGoat/welcome.mvc,HTTP/1.1,"""""",403,True,17.95,Page Load
+2025-12-08T09:32:15.894604,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""nicholsalicia"", ""password"": ""t6$5V&rXB&79""}",403,True,4.52,Login Attempt
+2025-12-08T09:32:16.234161,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""thomasmartin"", ""password"": ""+h(Q2EGm34"", ""confirmParam"": ""on"", ""email"": ""tjones@example.net""}",403,True,4.32,Registration
+2025-12-08T09:32:16.387386,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""kimberlyellis"", ""password"": ""cH9JA(&k5Db!""}",403,True,4.37,Login Attempt
+2025-12-08T09:32:16.599268,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""pamelajohnston"", ""password"": ""G9e*Lxt2&r_c""}",403,True,16.64,Login Attempt
+2025-12-08T09:32:16.946214,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""brianrodriguez"", ""password"": ""K$hu0UNvgn"", ""confirmParam"": ""on"", ""email"": ""thomas17@example.net""}",403,True,17.52,Registration
+2025-12-08T09:32:17.199516,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""paula48"", ""password"": "")V7FAjt$5R"", ""confirmParam"": ""on"", ""email"": ""ghart@example.net""}",403,True,4.14,Registration
+2025-12-08T09:32:17.463258,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""me""}",403,True,18.27,Search
+2025-12-08T09:32:17.651991,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""myersjason"", ""password"": ""(vm9IVhKs0"", ""confirmParam"": ""on"", ""email"": ""nmyers@example.org""}",403,True,18.33,Registration
+2025-12-08T09:32:17.898986,127.0.0.1,GET,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"""""",403,True,17.73,Page Load
+2025-12-08T09:32:18.176659,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""diane39"", ""password"": ""QD1eTdqH_#R4""}",403,True,17.24,Login Attempt
+2025-12-08T09:32:18.510714,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Reveal page window theory share often next."", ""user_id"": ""933""}",403,True,4.15,Comment
+2025-12-08T09:32:18.744135,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Tell cultural maybe image first hair reality."", ""user_id"": ""237""}",403,True,17.86,Comment
+2025-12-08T09:32:19.105618,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""awalker"", ""password"": ""6#4fVWCx%toj""}",403,True,17.25,Login Attempt
+2025-12-08T09:32:19.329968,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""scotthenderson"", ""password"": "")A6J(nSvK^"", ""confirmParam"": ""on"", ""email"": ""wnewman@example.com""}",403,True,5.71,Registration
+2025-12-08T09:32:19.837328,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""Comptonchester""}",403,True,17.36,Search
+2025-12-08T09:32:20.181852,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""North Dianeshire""}",403,True,18.45,Search
+2025-12-08T09:32:20.508965,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Little cost entire tonight against expect."", ""user_id"": ""860""}",403,True,18.41,Comment
+2025-12-08T09:32:21.024299,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""bwilliamson"", ""password"": ""6lVPPX#f@f"", ""confirmParam"": ""on"", ""email"": ""valerie87@example.net""}",403,True,17.73,Registration
+2025-12-08T09:32:21.305390,127.0.0.1,GET,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"""""",403,True,17.86,Page Load
+2025-12-08T09:32:21.617706,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""nicole49"", ""password"": ""(Dw5COc15C(G""}",403,True,17.92,Login Attempt
+2025-12-08T09:32:21.900998,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""mariabell"", ""password"": ""^y&)$yMc84XQ""}",403,True,4.05,Login Attempt
+2025-12-08T09:32:22.337985,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""nolsen"", ""password"": ""x(&bCFbt%&7b""}",403,True,4.52,Login Attempt
+2025-12-08T09:32:22.566387,127.0.0.1,GET,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"""""",403,True,18.34,Page Load
+2025-12-08T09:32:22.835877,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""write""}",403,True,20.02,Search
+2025-12-08T09:32:22.974592,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""rhonda50"", ""password"": ""^_9IEwKj8HJh""}",403,True,16.82,Login Attempt
+2025-12-08T09:32:23.336901,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""qcarter"", ""password"": ""q3Eb2L(irn@(""}",403,True,17.86,Login Attempt
+2025-12-08T09:32:23.812528,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""robertsontheresa"", ""password"": ""2&yE9^NeBtYb""}",403,True,18.02,Login Attempt
+2025-12-08T09:32:24.078039,127.0.0.1,GET,http://localhost:2323/WebGoat/registration,/WebGoat/registration,HTTP/1.1,"""""",403,True,17.84,Page Load
+2025-12-08T09:32:24.394282,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""Lake Charlesmouth""}",403,True,4.74,Search
+2025-12-08T09:32:24.862832,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""East Jasonburgh""}",403,True,18.17,Search
+2025-12-08T09:32:25.336543,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Design instead until popular."", ""user_id"": ""122""}",403,True,5.25,Comment
+2025-12-08T09:32:25.706620,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""josephfisher"", ""password"": ""c*9eSBkOA)pD""}",403,True,17.77,Login Attempt
+2025-12-08T09:32:25.994048,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""South Alex""}",403,True,4.7,Search
+2025-12-08T09:32:26.358741,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Its yourself cultural detail professional."", ""user_id"": ""368""}",403,True,19.9,Comment
+2025-12-08T09:32:26.610837,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""pull""}",403,True,18.4,Search
+2025-12-08T09:32:26.737545,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Different civil field represent positive."", ""user_id"": ""831""}",403,True,4.34,Comment
+2025-12-08T09:32:26.878525,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Enter onto public education anything before loss soon."", ""user_id"": ""832""}",403,True,17.44,Comment
+2025-12-08T09:32:27.208902,127.0.0.1,GET,http://localhost:2323/WebGoat/welcome.mvc,/WebGoat/welcome.mvc,HTTP/1.1,"""""",403,True,17.92,Page Load
+2025-12-08T09:32:27.369575,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""rachelwebb"", ""password"": ""48v^&Fpt^s"", ""confirmParam"": ""on"", ""email"": ""jaimeklein@example.com""}",403,True,5.43,Registration
+2025-12-08T09:32:27.865974,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""better""}",403,True,18.15,Search
+2025-12-08T09:32:28.333931,127.0.0.1,GET,http://localhost:2323/WebGoat/start.mvc,/WebGoat/start.mvc,HTTP/1.1,"""""",403,True,17.02,Page Load
+2025-12-08T09:32:28.521691,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""jweber"", ""password"": ""F&2Hdawa5Z"", ""confirmParam"": ""on"", ""email"": ""phillipbrady@example.com""}",403,True,16.72,Registration
+2025-12-08T09:32:28.774219,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""South Kellyton""}",403,True,16.46,Search
+2025-12-08T09:32:29.017534,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""East Carlos""}",403,True,4.85,Search
+2025-12-08T09:32:29.267168,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Explain size address especially away fight decide include."", ""user_id"": ""239""}",403,True,19.02,Comment
+2025-12-08T09:32:29.623397,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""katie18"", ""password"": ""jexq7KtxV%*(""}",403,True,18.09,Login Attempt
+2025-12-08T09:32:29.892950,127.0.0.1,GET,http://localhost:2323/WebGoat/search,/WebGoat/search,HTTP/1.1,"{""q"": ""Lake Donaldberg""}",403,True,18.46,Search
+2025-12-08T09:32:30.181403,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Skill center and."", ""user_id"": ""460""}",403,True,5.04,Comment
+2025-12-08T09:32:30.441543,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""wfuentes"", ""password"": ""(bRaOtTf*0)D""}",403,True,16.48,Login Attempt
+2025-12-08T09:32:30.584809,127.0.0.1,GET,http://localhost:2323/WebGoat/registration,/WebGoat/registration,HTTP/1.1,"""""",403,True,5.05,Page Load
+2025-12-08T09:32:31.070140,127.0.0.1,POST,http://localhost:2323/WebGoat/register.mvc,/WebGoat/register.mvc,HTTP/1.1,"{""username"": ""timothywilliams"", ""password"": ""G5_Cf3Dp^4"", ""confirmParam"": ""on"", ""email"": ""dcraig@example.com""}",403,True,16.87,Registration
+2025-12-08T09:32:31.540908,127.0.0.1,GET,http://localhost:2323/WebGoat/start.mvc,/WebGoat/start.mvc,HTTP/1.1,"""""",403,True,17.72,Page Load
+2025-12-08T09:32:31.972423,127.0.0.1,POST,http://localhost:2323/WebGoat/comment,/WebGoat/comment,HTTP/1.1,"{""text"": ""Society drive morning gas."", ""user_id"": ""119""}",403,True,5.84,Comment
+2025-12-08T09:32:32.434937,127.0.0.1,POST,http://localhost:2323/WebGoat/login,/WebGoat/login,HTTP/1.1,"{""username"": ""browndouglas"", ""password"": ""@27geZzfD&Jl""}",403,True,10.69,Login Attempt

