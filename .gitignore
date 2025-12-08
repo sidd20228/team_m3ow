@@ -36,6 +36,21 @@ env/
 *.npy
 *.h5
 *.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+*.ckpt
+*.gguf
+*.ggml
+*.joblib
+*.msgpack
+*.model
+*.weights
+
+# Local shortcut / artifact files
+*.lnk
+distilbert_http_mlm_merged_epoch18*
 
 # Node modules
 node_modules/
